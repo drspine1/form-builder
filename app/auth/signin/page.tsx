@@ -161,6 +161,11 @@ function SignInForm() {
           </Link>
         </p>
       </div>
+
+      {/* Footer */}
+      <footer className="border-t mt-8 py-6 text-center text-xs text-muted-foreground">
+        <p>© {new Date().getFullYear()} FormCraft. Build beautiful forms, free forever.</p>
+      </footer>
     </div>
   )
 }

@@ -130,6 +130,11 @@ export default function SignUpPage() {
           </Link>
         </p>
       </div>
+
+      {/* Footer */}
+      <footer className="mt-8 text-center text-xs text-muted-foreground">
+        <p>© {new Date().getFullYear()} FormCraft. Build beautiful forms, free forever.</p>
+      </footer>
     </div>
   )
 }

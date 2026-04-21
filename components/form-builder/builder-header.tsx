@@ -20,10 +20,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import {
   Undo2, Redo2, Settings, Eye, Globe, EyeOff,
-  CheckCircle, AlertCircle, Loader2, MoreHorizontal,
-  LayoutDashboard, LogOut, User,
+  Loader2, MoreHorizontal, LayoutDashboard, LogOut, User,
 } from 'lucide-react'
-import type { SaveStatus } from '@/hooks/use-form-builder'
 
 export interface BuilderHeaderProps {
   formName: string
@@ -32,26 +30,13 @@ export interface BuilderHeaderProps {
   onRedo: () => void
   canUndo: boolean
   canRedo: boolean
-  onPreview: () => void
+  onPreview?: () => void
   settingsContent: React.ReactNode
-  saveStatus?: SaveStatus
   isPublished?: boolean
   onPublishToggle?: () => void
-  // User actions
   userName?: string | null
   onDashboard?: () => void
   onSignOut?: () => void
-}
-
-function SaveIndicator({ status }: { status: SaveStatus }) {
-  if (status === 'idle') return null
-  return (
-    <span className="text-xs text-muted-foreground flex items-center gap-1 whitespace-nowrap" aria-live="polite">
-      {status === 'saving' && <><Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />Saving…</>}
-      {status === 'saved' && <><CheckCircle className="h-3 w-3 text-green-500" aria-hidden="true" />Saved</>}
-      {status === 'error' && <><AlertCircle className="h-3 w-3 text-destructive" aria-hidden="true" />Failed</>}
-    </span>
-  )
 }
 
 export const BuilderHeader = React.memo(function BuilderHeader({
@@ -63,7 +48,6 @@ export const BuilderHeader = React.memo(function BuilderHeader({
   canRedo,
   onPreview,
   settingsContent,
-  saveStatus = 'idle',
   isPublished = false,
   onPublishToggle,
   userName,
@@ -88,7 +72,6 @@ export const BuilderHeader = React.memo(function BuilderHeader({
             placeholder="Untitled Form"
             aria-label="Form name"
           />
-          <SaveIndicator status={saveStatus} />
         </div>
 
         {/* Toolbar */}
@@ -114,10 +97,12 @@ export const BuilderHeader = React.memo(function BuilderHeader({
             Settings
           </Button>
 
-          <Button size="sm" variant="default" onClick={onPreview} aria-label="Preview form">
-            <Eye className="h-4 w-4 mr-1" aria-hidden="true" />
-            Preview
-          </Button>
+          {onPreview && (
+            <Button size="sm" variant="default" onClick={onPreview} aria-label="Preview form">
+              <Eye className="h-4 w-4 mr-1" aria-hidden="true" />
+              Preview
+            </Button>
+          )}
 
           {/* Desktop user menu */}
           {(onDashboard || onSignOut) && (
@@ -166,12 +151,14 @@ export const BuilderHeader = React.memo(function BuilderHeader({
           </div>
 
           <div className="flex items-center gap-1">
-            <Button size="sm" variant="default" onClick={onPreview} aria-label="Preview form">
-              <Eye className="h-4 w-4 mr-1" aria-hidden="true" />
-              Preview
-            </Button>
+            {onPreview && (
+              <Button size="sm" variant="default" onClick={onPreview} aria-label="Preview form">
+                <Eye className="h-4 w-4 mr-1" aria-hidden="true" />
+                Preview
+              </Button>
+            )}
 
-            {/* Mobile overflow menu — everything else */}
+            {/* Mobile overflow menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="sm" variant="outline" aria-label="More options">
@@ -213,7 +200,7 @@ export const BuilderHeader = React.memo(function BuilderHeader({
           </div>
         </div>
 
-        {/* Row 2: full-width form name */}
+        {/* Row 2: full-width form name + save status */}
         <div className="flex items-center gap-2">
           <Label htmlFor="builder-form-name-mobile" className="sr-only">Form name</Label>
           <Input
@@ -224,7 +211,6 @@ export const BuilderHeader = React.memo(function BuilderHeader({
             placeholder="Untitled Form"
             aria-label="Form name"
           />
-          <SaveIndicator status={saveStatus} />
         </div>
       </div>
 

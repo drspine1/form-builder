@@ -11,10 +11,13 @@ export function useFormAutoSave(formId: string, interval: number = 2000) {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
 
   const saveForm = useCallback(async () => {
+    const isDbForm = session?.user?.id && formId && formId !== 'default-form' && formId.length === 24
+
+    // No real form to save — skip localStorage entirely, stay idle
+    if (!isDbForm) return
+
     setSaveStatus('saving')
     setAutoSaving(true)
-
-    const isDbForm = session?.user?.id && formId && formId !== 'default-form'
 
     try {
       if (isDbForm) {

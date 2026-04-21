@@ -172,6 +172,9 @@ export default function PublicFormPage() {
         <div className="max-w-2xl mx-auto bg-white rounded-lg border shadow-sm p-6 sm:p-8">
           <FormRenderer schema={schema} onSubmit={handleSinglePageSubmit} />
         </div>
+        <footer className="mt-6 text-center text-xs text-muted-foreground">
+          Powered by <span className="font-medium">FormCraft</span>
+        </footer>
       </div>
     )
   }
@@ -192,8 +195,7 @@ export default function PublicFormPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted p-4 sm:p-6">
-      <div className="max-w-2xl mx-auto space-y-4">
-        {/* Progress bar */}
+      <div className="max-w-2xl mx-auto space-y-4">        {/* Progress bar */}
         {schema.settings.progressBarEnabled && (
           <div className="space-y-1">
             <div className="flex justify-between text-xs text-muted-foreground">
@@ -268,6 +270,9 @@ export default function PublicFormPage() {
           </div>
         </div>
       </div>
+      <footer className="mt-6 text-center text-xs text-muted-foreground">
+        Powered by <span className="font-medium">FormCraft</span>
+      </footer>
     </div>
   )
 }

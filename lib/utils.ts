@@ -164,9 +164,12 @@ export function deserializeFormData(json: string): Record<string, any> {
 // Storage utilities
 export function saveFormToLocalStorage(formId: string, form: any): void {
   try {
-    localStorage.setItem(`form_${formId}`, JSON.stringify(form))
-  } catch (e) {
-    console.error('Failed to save form to localStorage:', e)
+    const serialized = JSON.stringify(form)
+    // Skip if the data is too large (>200KB) to avoid quota errors
+    if (serialized.length > 200_000) return
+    localStorage.setItem(`form_${formId}`, serialized)
+  } catch {
+    // Quota exceeded or storage unavailable — silently skip
   }
 }
 
